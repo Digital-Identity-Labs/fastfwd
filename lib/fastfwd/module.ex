@@ -11,7 +11,7 @@ defmodule Fastfwd.Module do
   end
 
   def has_tag?(module, tag) do
-    Enum.find(Fastfwd.Modumodule, fn (x) -> x == tag end)
+    Enum.find(tags(module), fn (x) -> x == tag end)
   end
 
   def has_behaviour?(module, nil) do
@@ -25,7 +25,7 @@ defmodule Fastfwd.Module do
   end
 
   def tagged?(module) do
-    :erlang.function_exported(module, :fwd_tags, 0)
+    has_behaviour?(module, Fastfwd.Behaviours.Receiver) || :erlang.function_exported(module, :fwd_tags, 0)
   end
 
 end
