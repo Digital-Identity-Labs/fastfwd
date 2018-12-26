@@ -1,0 +1,6 @@
+%{
+  "apex": {:hex, :apex, "1.2.1", "297f5dac23fa2a32648b890a0838fce2772114010e0b9ec975cae6021cc5a092", [:mix], []},
+  "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], []},
+  "credo": {:hex, :credo, "0.10.2", "03ad3a1eff79a16664ed42fc2975b5e5d0ce243d69318060c626c34720a49512", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, optional: false]}, {:jason, "~> 1.0", [hex: :jason, optional: false]}]},
+  "jason": {:hex, :jason, "1.1.2", "b03dedea67a99223a2eaf9f1264ce37154564de899fd3d8b9a21b1a6fd64afe7", [:mix], [{:decimal, "~> 1.0", [hex: :decimal, optional: true]}]},
+}

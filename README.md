@@ -19,3 +19,7 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/fastfwd](https://hexdocs.pm/fastfwd).
 
+https://en.wikipedia.org/wiki/Dynamic_dispatch#Smalltalk_implementation
+
+https://en.wikipedia.org/wiki/Forwarding_(object-oriented_programming)#Applications
+

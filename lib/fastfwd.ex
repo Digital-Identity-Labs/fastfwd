@@ -3,16 +3,33 @@ defmodule Fastfwd do
   Documentation for Fastfwd.
   """
 
-  @doc """
-  Hello world.
+  alias Fastfwd.Modules
+  alias Fastfwd.Module
 
-  ## Examples
-
-      iex> Fastfwd.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def modules(namespace, behaviour) do
+    Modules.all()
+    |> Modules.in_namespace(namespace)
+    |> Modules.with_behaviour(behaviour)
   end
+
+  def senders() do
+    Modules.all()
+    |> Modules.with_behaviour(Fastfwd.Behaviours.Sender)
+  end
+
+  def select(modules, tag) do
+    Module.with_tag(modules, tag)
+  end
+
+  def tags(modules) do
+    modules
+    |> Fastfwd.Modules.tags()
+  end
+
+  def map(modules) do
+    modules
+    |> Fastfwd.Modules.map()
+  end
+
 end
+
