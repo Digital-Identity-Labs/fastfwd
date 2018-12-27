@@ -31,6 +31,11 @@ defmodule Fastfwd.Sender do
         |> Fastfwd.map()
       end
 
+      def load_receivers do
+
+      end
+
+
     end
 
   end

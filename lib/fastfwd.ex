@@ -5,6 +5,7 @@ defmodule Fastfwd do
 
   alias Fastfwd.Modules
   alias Fastfwd.Module
+  alias Fastfwd.Loader
 
   def modules(namespace, behaviour) do
     Modules.all()
@@ -29,6 +30,10 @@ defmodule Fastfwd do
   def map(modules) do
     modules
     |> Fastfwd.Modules.map()
+  end
+
+  def load(behaviour \\ Fastfwd.Behaviours.Receiver) do
+    Loader.run()
   end
 
 end

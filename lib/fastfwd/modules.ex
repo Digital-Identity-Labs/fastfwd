@@ -24,12 +24,6 @@ defmodule Fastfwd.Modules do
     |> Enum.filter(&Fastfwd.Module.has_behaviour?(&1, behaviour))
   end
 
-  def load(modules) do
-    modules
-    |> Enum.each(&Code.ensure_loaded?(&1))
-    modules
-  end
-
   def with_tags() do
 
   end
