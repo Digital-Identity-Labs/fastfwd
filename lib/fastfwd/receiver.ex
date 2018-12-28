@@ -2,7 +2,7 @@ defmodule Fastfwd.Receiver do
 
   defmacro __using__(opts) do
 
-    tags = Keyword.get(opts, :tags, [])
+    tags = List.flatten([Keyword.get(opts, :tags, [])])
 
     quote do
 
@@ -10,7 +10,7 @@ defmodule Fastfwd.Receiver do
 
       @impl Fastfwd.Behaviours.Receiver
       def fwd_tags() do
-        List.flatten([unquote(tags)])
+        unquote(tags)
       end
 
       defoverridable fwd_tags: 0

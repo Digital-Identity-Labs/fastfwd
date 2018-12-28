@@ -21,8 +21,10 @@ defmodule Fastfwd.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:fastglobal, "~> 1.0"},
       {:apex, "~> 1.2", only: [:dev, :test], runtime: false},
       {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false},
+      {:benchee, "~> 0.9", only: :dev},
     ]
   end
 end

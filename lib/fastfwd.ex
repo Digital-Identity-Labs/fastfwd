@@ -19,7 +19,7 @@ defmodule Fastfwd do
   end
 
   def select(modules, tag) do
-    Module.with_tag(modules, tag)
+    Modules.with_tag(modules, tag)
   end
 
   def tags(modules) do
