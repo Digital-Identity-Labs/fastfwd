@@ -1,9 +1,14 @@
 defmodule Fastfwd.Module do
+  @moduledoc """
+  Interact with individual Fastfwd-compatible modules - check for tags, behaviours, and so on.
+  """
 
   def tags(module) do
     try do
       if tagged?(module) do
         module.fwd_tags || []
+      else
+        []
       end
     rescue
       []

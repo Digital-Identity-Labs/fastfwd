@@ -1,62 +1,102 @@
 defmodule Fastfwd.Loader do
+  @moduledoc """
+  Make sure all modules for the specified applications have been loaded *before* Fastfwd searches them for suitable behaviours.
 
+  In some environments Elixir will only load a module when it first accessed. This means that modules designed to be
+  accessed by Fastfwd may not be loaded when it searches for them.
+
+  Modules `use`-ing the Fastfwd.Sender module will auto-load their receiver modules, but you may want to manually
+  preload modules using Fastfwd.Loader if you are using Fastfwd to build something more bespoke.
+  """
+
+  @doc """
+  Finds all modules for the *first* application and preloads them, making them visible to Fastfwd.
+
+  If no applications are specified then Fastfwd will attempt to search the first application found, assuming it to be
+  the current project. It's best to specify the projects you want to search.
+
+  ## Examples
+
+      iex> Fastfwd.Loader.run()
+      {:ok, [:my_app]}
+
+  """
+  @spec run() :: {:ok, [atom]} | {:error, string}
   def run() do
-    [probably_the_application()]
+    probably_this_application()
     |> run()
   end
 
+  @doc """
+  Finds all modules for listed applications and preloads them, making them visible to Fastfwd.
+
+
+  If `:all` is specified then Fastfwd will attempt to search all applications.
+
+  ## Examples
+
+      iex> Fastfwd.Loader.run(:my_app)
+      {:ok, [:my_app]}
+
+      iex> Fastfwd.Loader.run([:my_app, :my_app_ee, :extra_plugins])
+      {:ok, [:my_app, :my_app_ee, :extra_plugins]}
+
+      iex> Fastfwd.Loader.run(:all)
+      {:ok, [:my_app, :fastfwd, :fastglobal, :syntax_tools, :benchee, :deep_merge, :logger, :hex, :inets, :ssl, :public_key, :asn1, :crypto, :mix, :iex, :elixir, :compiler, :stdlib, :kernel]}
+
+  """
+  @spec run(:all) :: {:ok, [atom]} | {:error, string}
+  def run(:all) do
+    all_applications()
+    |> run()
+  end
+
+  @doc """
+  Finds all modules for listed applications and preloads them, making them visible to Fastfwd.
+
+
+  If `:all` is specified then Fastfwd will attempt to search all applications.
+
+  ## Examples
+
+      iex> Fastfwd.Loader.run(:my_app)
+      {:ok, [:my_app]}
+
+      iex> Fastfwd.Loader.run([:my_app, :my_app_ee, :extra_plugins])
+      {:ok, [:my_app, :my_app_ee, :extra_plugins]}
+
+      iex> Fastfwd.Loader.run(:all)
+      {:ok, [:my_app, :fastfwd, :fastglobal, :syntax_tools, :benchee, :deep_merge, :logger, :hex, :inets, :ssl, :public_key, :asn1, :crypto, :mix, :iex, :elixir, :compiler, :stdlib, :kernel]}
+
+  """
+  @spec run([atom]) :: {:ok, [atom]} | {:error, string}
   def run(apps) do
-    Enum.each(
-      apps,
-      fn app ->
-        {:ok, modules} = :application.get_key(app, :modules)
-        Enum.each(
-          modules,
-          fn mod ->
-            Code.ensure_loaded?(mod)
-          end
-        )
-      end
-    )
+    List.flatten([apps])
+    |> Enum.reject(fn x -> x == :undefined end) 
+    |> Enum.each(
+         fn app ->
+           {:ok, modules} = :application.get_key(app, :modules)
+           Enum.each(
+             modules,
+             fn mod ->
+               Code.ensure_loaded?(mod)
+             end
+           )
+         end
+       )
+    {:ok, apps}
   end
 
-  defp probably_the_application() do
-    {app, app_name, app_version} = Application.started_applications(1000)
-                                   |> List.first()
-    app
+  ## I realise this is almost certainly not the best way to do this. TODO: Find the best way to do this
+  defp probably_this_application() do
+    all_applications()
+    |> List.first()
   end
 
-
-
-  ## https://stackoverflow.com/questions/36433481/find-all-modules-that-adopted-behavior
-
-  #
-  #  def run(behaviour \\ Fastfwd.Behaviours.Receiver) do
-  #    available_modules(behaviour)
-  #    |> Enum.reduce([], &load_module/2)
-  #  end
-  #
-  #  defp load_module(module, modules) do
-  #    if Code.ensure_loaded?(module), do: [module | modules], else: modules
-  #  end
-  #
-  #  defp available_modules(behaviour) do
-  #
-  #    Mix.Task.run("loadpaths", [])
-  #
-  #    Path.wildcard(Path.join([Mix.Project.build_path, "**/ebin/**/*.beam"]))
-  #    |> Stream.map(
-  #         fn path ->
-  #           {:ok, {mod, chunks}} = :beam_lib.chunks('#{path}', [:attributes])
-  #           {mod, get_in(chunks, [:attributes, :behaviour])}
-  #         end
-  #       )
-  #      # Filter out behaviours we don't care about and duplicates
-  #    |> Stream.filter(fn {_mod, behaviours} -> is_list(behaviours) && behaviour in behaviours end)
-  #    |> Enum.uniq
-  #    |> Enum.map(fn {module, _} -> module end)
-  #  end
-
+  defp all_applications() do
+    Application.started_applications(1000)
+    |> Enum.map(fn ({app, _, _}) -> app end)
+  end
 
 end
 

@@ -1,5 +1,9 @@
 defmodule Fastfwd.Sender do
 
+  @moduledoc """
+    Behaviour for implementing a typical Fastfwd sender, such as an adapter frontend, forwarder or facade
+  """
+
   defmacro __using__(opts \\ []) do
 
     namespace = Keyword.get(opts, :namespace, __CALLER__.module)
@@ -17,7 +21,7 @@ defmodule Fastfwd.Sender do
       def fwd(tag, function_name, params) do
         fwd_modules()
         |> Fastfwd.select(tag)
-        |> apply(function_name, params)
+        |> apply(function_name, List.flatten([params]))
       end
 
       @impl Fastfwd.Behaviours.Sender
@@ -45,7 +49,10 @@ defmodule Fastfwd.Sender do
       end
 
       def load_receivers do
-        Fastfwd.Loader.run()
+        case Fastfwd.Loader.run(:all) do
+          {:ok, _} -> :ok
+          _ -> raise "Error preloading modules for #{__MODULE__}"
+        end
       end
 
     end

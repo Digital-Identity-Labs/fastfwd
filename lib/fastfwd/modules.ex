@@ -1,4 +1,8 @@
 defmodule Fastfwd.Modules do
+  @moduledoc """
+  Interact with Fastfwd-compatible modules - find, filter, build maps.
+  """
+
 
   def all() do
     :code.all_loaded()
