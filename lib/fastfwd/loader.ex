@@ -1,12 +1,14 @@
 defmodule Fastfwd.Loader do
   @moduledoc """
-  Make sure all modules for the specified applications have been loaded *before* Fastfwd searches them for suitable behaviours.
+  Makes sure all modules for the specified applications have been loaded *before* Fastfwd searches them for suitable behaviours.
 
-  In some environments Elixir will only load a module when it first accessed. This means that modules designed to be
-  accessed by Fastfwd may not be loaded when it searches for them.
+  In some environments Elixir will only load a module when it's first accessed. This means that modules designed to be
+  accessed by Fastfwd might not be already loaded when it searches for them, and will not be detected properly.
 
-  Modules `use`-ing the Fastfwd.Sender module will auto-load their receiver modules, but you may want to manually
-  preload modules using Fastfwd.Loader if you are using Fastfwd to build something more bespoke.
+  You won't need to use this module if your sender modules are `use`-ing the Fastfwd.Sender module, as it will auto-load
+  their receiver modules.
+
+  If you are using Fastfwd to build something more bespoke then you may want to manually preload modules using Fastfwd.Loader
   """
 
   @doc """
@@ -45,7 +47,7 @@ defmodule Fastfwd.Loader do
       {:ok, [:my_app, :fastfwd, :fastglobal, :syntax_tools, :benchee, :deep_merge, :logger, :hex, :inets, :ssl, :public_key, :asn1, :crypto, :mix, :iex, :elixir, :compiler, :stdlib, :kernel]}
 
   """
-  @spec run(:all) :: {:ok, [atom]} | {:error, string}
+  @spec run(:all) :: {:ok, [atom]} | {:error, String.t()}
   def run(:all) do
     all_applications()
     |> run()
@@ -69,10 +71,10 @@ defmodule Fastfwd.Loader do
       {:ok, [:my_app, :fastfwd, :fastglobal, :syntax_tools, :benchee, :deep_merge, :logger, :hex, :inets, :ssl, :public_key, :asn1, :crypto, :mix, :iex, :elixir, :compiler, :stdlib, :kernel]}
 
   """
-  @spec run([atom]) :: {:ok, [atom]} | {:error, string}
+  @spec run([atom]) :: {:ok, [atom]} | {:error, String.t()}
   def run(apps) do
     List.flatten([apps])
-    |> Enum.reject(fn x -> x == :undefined end) 
+    |> Enum.reject(fn x -> x == :undefined end)
     |> Enum.each(
          fn app ->
            {:ok, modules} = :application.get_key(app, :modules)
@@ -93,6 +95,7 @@ defmodule Fastfwd.Loader do
     |> List.first()
   end
 
+  ## Collect the names of all loaded applications as atoms
   defp all_applications() do
     Application.started_applications(1000)
     |> Enum.map(fn ({app, _, _}) -> app end)
