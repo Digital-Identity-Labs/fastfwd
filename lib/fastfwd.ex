@@ -4,11 +4,6 @@ defmodule Fastfwd do
 
   """
 
-  alias Fastfwd.Modules
-  alias Fastfwd.Module
-  alias Fastfwd.Loader
-
-
   @doc """
   Returns a list of all modules within a module namespace
 
@@ -24,8 +19,8 @@ defmodule Fastfwd do
   """
   @spec modules(module) :: [module]
   def modules(namespace) do
-    Modules.all()
-    |> Modules.in_namespace(namespace)
+    Fastfwd.Modules.all()
+    |> Fastfwd.Modules.in_namespace(namespace)
   end
 
   @doc """
@@ -41,9 +36,9 @@ defmodule Fastfwd do
   """
   @spec modules(module, module) :: [module]
   def modules(namespace, behaviour) do
-    Modules.all()
-    |> Modules.in_namespace(namespace)
-    |> Modules.with_behaviour(behaviour)
+    Fastfwd.Modules.all()
+    |> Fastfwd.Modules.in_namespace(namespace)
+    |> Fastfwd.Modules.with_behaviour(behaviour)
   end
 
   @doc """
@@ -57,8 +52,8 @@ defmodule Fastfwd do
   """
   @spec senders() :: [module]
   def senders() do
-    Modules.all()
-    |> Modules.with_behaviour(Fastfwd.Behaviours.Sender)
+    Fastfwd.Modules.all()
+    |> Fastfwd.Modules.with_behaviour(Fastfwd.Behaviours.Sender)
   end
 
   @doc """
@@ -75,7 +70,7 @@ defmodule Fastfwd do
   """
   @spec select([module], atom) :: [module]
   def select(modules, tag) do
-    Modules.select(modules, tag)
+    Fastfwd.Modules.select(modules, tag)
   end
 
   @doc """
@@ -129,7 +124,7 @@ defmodule Fastfwd do
 
 
   """
-  @spec preload() :: {:ok, [atom]} | {:error, string}
+  @spec preload() :: {:ok, [atom]} | {:error, String.t()}
   defdelegate preload(), to:  Fastfwd.Loader, as: :run
 
   @doc """
@@ -155,7 +150,7 @@ defmodule Fastfwd do
       {:ok, [:my_app, :fastfwd, :fastglobal, :syntax_tools, :benchee, :deep_merge, :logger, :hex, :inets, :ssl, :public_key, :asn1, :crypto, :mix, :iex, :elixir, :compiler, :stdlib, :kernel]}
 
   """
-  @spec preload([atom]) :: {:ok, [atom]} | {:error, string}
+  @spec preload([atom]) :: {:ok, [atom]} | {:error, String.t()}
   defdelegate preload(list_of_applications), to: Fastfwd.Loader, as: :run
 
 end
