@@ -8,6 +8,7 @@ defmodule FastfwdTest do
       assert Fastfwd.modules(Icecream, Fastfwd.Behaviours.Receiver) == [
                Icecream.Pistachio,
                Icecream.Chocolate,
+               Icecream.ShavedIce,
                Icecream.Strawberry,
                Icecream.DoubleChocolate
              ]
@@ -18,6 +19,7 @@ defmodule FastfwdTest do
                Icecream.Pistachio,
                Icecream.Spoon,
                Icecream.Chocolate,
+               Icecream.ShavedIce,
                Icecream.Strawberry,
                Icecream.DoubleChocolate
              ]

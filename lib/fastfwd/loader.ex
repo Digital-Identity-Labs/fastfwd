@@ -19,13 +19,12 @@ defmodule Fastfwd.Loader do
 
   ## Examples
 
-      iex> Fastfwd.Loader.run()
-      {:ok, [:my_app]}
+      {:ok, apps} = Fastfwd.Loader.run()
 
   """
-  @spec run() :: {:ok, [atom]} | {:error, string}
+  @spec run() :: {:ok, [atom]} | {:error, String.t()}
   def run() do
-    probably_this_application()
+    [probably_this_application()]
     |> run()
   end
 
@@ -37,13 +36,13 @@ defmodule Fastfwd.Loader do
 
   ## Examples
 
-      iex> Fastfwd.Loader.run(:my_app)
+      Fastfwd.Loader.run(:my_app)
       {:ok, [:my_app]}
 
-      iex> Fastfwd.Loader.run([:my_app, :my_app_ee, :extra_plugins])
+      Fastfwd.Loader.run([:my_app, :my_app_ee, :extra_plugins])
       {:ok, [:my_app, :my_app_ee, :extra_plugins]}
 
-      iex> Fastfwd.Loader.run(:all)
+      Fastfwd.Loader.run(:all)
       {:ok, [:my_app, :fastfwd, :fastglobal, :syntax_tools, :benchee, :deep_merge, :logger, :hex, :inets, :ssl, :public_key, :asn1, :crypto, :mix, :iex, :elixir, :compiler, :stdlib, :kernel]}
 
   """
@@ -61,13 +60,13 @@ defmodule Fastfwd.Loader do
 
   ## Examples
 
-      iex> Fastfwd.Loader.run(:my_app)
+      Fastfwd.Loader.run(:my_app)
       {:ok, [:my_app]}
 
-      iex> Fastfwd.Loader.run([:my_app, :my_app_ee, :extra_plugins])
+      Fastfwd.Loader.run([:my_app, :my_app_ee, :extra_plugins])
       {:ok, [:my_app, :my_app_ee, :extra_plugins]}
 
-      iex> Fastfwd.Loader.run(:all)
+      Fastfwd.Loader.run(:all)
       {:ok, [:my_app, :fastfwd, :fastglobal, :syntax_tools, :benchee, :deep_merge, :logger, :hex, :inets, :ssl, :public_key, :asn1, :crypto, :mix, :iex, :elixir, :compiler, :stdlib, :kernel]}
 
   """

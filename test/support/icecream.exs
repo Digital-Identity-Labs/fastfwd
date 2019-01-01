@@ -27,6 +27,13 @@ defmodule Icecream.DoubleChocolate do
 
 end
 
+defmodule Icecream.ShavedIce do
+
+  use Fastfwd.Receiver, tags: []
+  def eat(spoons), do: "Eating #{spoons} of #{__MODULE__}"
+
+end
+
 defmodule Icecream.Spoon do
 
   def material, do: "metal"
