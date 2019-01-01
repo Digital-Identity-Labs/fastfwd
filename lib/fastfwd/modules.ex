@@ -14,6 +14,7 @@ defmodule Fastfwd.Modules do
       :io
 
   """
+  @spec all() :: [module]
   def all() do
     :code.all_loaded()
     |> Enum.map(&elem(&1, 0))
@@ -32,6 +33,7 @@ defmodule Fastfwd.Modules do
 
 
   """
+  @spec in_namespace(module) :: [module]
   def in_namespace(namespace) do
     all()
     |> in_namespace(namespace)
@@ -50,6 +52,7 @@ defmodule Fastfwd.Modules do
 
 
   """
+  @spec in_namespace([module], module) :: [module]
   def in_namespace(modules, namespace) do
     modules
     |> Enum.filter(&String.starts_with?(Atom.to_string(&1), "#{namespace}."))
@@ -67,6 +70,7 @@ defmodule Fastfwd.Modules do
 
 
   """
+  @spec with_behaviour(module) :: [module]
   def with_behaviour(behaviour) do
     all()
     |> with_behaviour(behaviour)
@@ -84,6 +88,7 @@ defmodule Fastfwd.Modules do
       [Icecream.Pistachio, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
 
   """
+  @spec with_behaviour([module], module) :: [module]
   def with_behaviour(modules, behaviour) do
     modules
     |> Enum.filter(&Fastfwd.Module.has_behaviour?(&1, behaviour))
@@ -101,6 +106,7 @@ defmodule Fastfwd.Modules do
       [Icecream.Pistachio]
 
   """
+  @spec with_tags([module]) :: [module]
   def with_tags(modules) do
     modules
     |> Enum.filter(fn (module) -> Fastfwd.Module.tagged?(module) end)
@@ -121,6 +127,7 @@ defmodule Fastfwd.Modules do
 
 
   """
+  @spec with_tag([module], atom) :: module
   def with_tag(modules, tag) do
     modules
     |> with_tags()
@@ -140,6 +147,7 @@ defmodule Fastfwd.Modules do
 
 
   """
+  @spec select([module], atom) :: module
   def select(modules, tag) do
     modules
     |> Enum.find(fn (module) -> Fastfwd.Module.has_tag?(module, tag) end)
@@ -157,6 +165,7 @@ defmodule Fastfwd.Modules do
       [:pistachio, :chocolate]
 
   """
+  @spec tags([module]) :: [atom]
   def tags(modules) do
     modules
     |> Enum.map(fn (module) -> Fastfwd.Module.tags(module) end)
@@ -179,6 +188,7 @@ defmodule Fastfwd.Modules do
       }
 
   """
+  @spec map([module]) :: map
   def map(modules) do
     for module <- modules,
         tag <- Fastfwd.Module.tags(module),
