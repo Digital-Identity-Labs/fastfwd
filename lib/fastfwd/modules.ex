@@ -3,59 +3,182 @@ defmodule Fastfwd.Modules do
   Interact with Fastfwd-compatible modules - find, filter, build maps.
   """
 
+  @doc """
+  Lists *all* modules, whether or not they are using Fastfwd.
 
+  Returns a list of module names, including both Elixir style and Erlang atoms.
+
+  ## Examples
+
+      iex> Fastfwd.Modules.all |> List.first()
+      :io
+
+  """
   def all() do
     :code.all_loaded()
     |> Enum.map(&elem(&1, 0))
   end
 
+  @doc """
+
+  Lists all modules in a module namespace (with names under the module name)
+
+  Returns a list of module  names
+
+  ## Examples
+
+      iex> Fastfwd.Modules.in_namespace(Icecream)
+      [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
+
+
+  """
   def in_namespace(namespace) do
     all()
     |> in_namespace(namespace)
   end
 
+  @doc """
+  Filters a list of modules to only include those under a particular namespace
+
+  Returns filtered list of modules
+
+  ## Examples
+
+      iex> module_list = [Icecream.Pistachio, FrozenYogurt.FullCellphoneBattery, Icecream.Chocolate]
+      iex> Fastfwd.Modules.in_namespace(module_list, Icecream)
+      [Icecream.Pistachio, Icecream.Chocolate]
+
+
+  """
   def in_namespace(modules, namespace) do
     modules
     |> Enum.filter(&String.starts_with?(Atom.to_string(&1), "#{namespace}."))
   end
 
-  def with_behaviour(modules, nil) do
-    modules
+  @doc """
+  Lists all modules with the specified behaviour.
+
+  Returns a list of module names
+
+  ## Examples
+
+      iex> Fastfwd.Modules.with_behaviour(Fastfwd.Behaviours.Sender)
+      [Icecream]
+
+
+  """
+  def with_behaviour(behaviour) do
+    all()
+    |> with_behaviour(behaviour)
   end
 
+  @doc """
+  Filters a list of modules to only include those with the specified behaviour
+
+  Returns filtered list of modules
+
+  ## Examples
+
+      iex> module_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
+      iex> Fastfwd.Modules.with_behaviour(Fastfwd.Behaviours.Receiver)
+      [Icecream.Pistachio, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
+
+  """
   def with_behaviour(modules, behaviour) do
     modules
     |> Enum.filter(&Fastfwd.Module.has_behaviour?(&1, behaviour))
   end
 
-  def with_tags() do
+  @doc """
+  Find modules that have tags (any tags at all)
 
-  end
+  Returns a filtered list of modules
 
+  ## Examples
+
+      iex> module_list = [Icecream.Pistachio, Icecream.Spoon]
+      iex> Fastfwd.Modules.with_tags(module_list)
+      [Icecream.Pistachio]
+
+  """
   def with_tags(modules) do
-
+    modules
+    |> Enum.filter(fn (module) -> Fastfwd.Module.tagged?(module) end)
   end
 
-  def with_tags(modules, tags) do
+  @doc """
+  Find all modules that have the specified tag.
 
-  end
+  Tags are not necessarily unique -  more than one module may have the same tag.
 
+  Returns a filtered list of modules
+
+  ## Examples
+
+      iex> module_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
+      iex> Fastfwd.Modules.with_tag(module_list, :chocolate)
+      [Icecream.Chocolate, Icecream.DoubleChocolate]
+
+
+  """
   def with_tag(modules, tag) do
     modules
-    |> Enum.find(tag, fn (x) -> x == tag end)
+    |> with_tags()
+    |> Enum.filter(fn (module) -> Fastfwd.Module.has_tag?(module, tag) end)
   end
 
+  @doc """
+  Select a module that has the specified tag.
+
+  Returns a single module name.
+
+  ## Examples
+
+      iex> modules_list = Fastfwd.modules(Icecream, Fastfwd.Behaviours.Receiver)
+      iex> Fastfwd.Modules.select(modules_list, :chocolate)
+      Icecream.Chocolate
+
+
+  """
   def select(modules, tag) do
     modules
     |> Enum.find(fn (module) -> Fastfwd.Module.has_tag?(module, tag) end)
   end
 
+  @doc """
+  List all tags found in a collection of modules
+
+  Returns a list of atoms
+
+  ## Examples
+
+      iex> modules_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate]
+      iex> Fastfwd.Modules.tags(modules_list)
+      [:pistachio, :chocolate]
+
+  """
   def tags(modules) do
     modules
     |> Enum.map(fn (module) -> Fastfwd.Module.tags(module) end)
     |> List.flatten
   end
 
+  @doc """
+  Build a map of tags to modules, without duplicated tags.
+
+  Returns a map of atoms to module names.
+
+  ## Examples
+
+      iex> modules_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.DoubleChocolate]
+      iex> Fastfwd.Modules.map(modules_list)
+      %{
+        pistachio: Icecream.Pistachio,
+        chocolate: Icecream.DoubleChocolate,
+        double_chocolate: Icecream.DoubleChocolate,
+      }
+
+  """
   def map(modules) do
     for module <- modules,
         tag <- Fastfwd.Module.tags(module),
