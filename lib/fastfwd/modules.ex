@@ -147,10 +147,10 @@ defmodule Fastfwd.Modules do
 
 
   """
-  @spec select([module], atom) :: module
-  def select(modules, tag) do
+  @spec select([module], atom, nil | module) :: module
+  def select(modules, tag, default \\ nil) do
     modules
-    |> Enum.find(fn (module) -> Fastfwd.Module.has_tag?(module, tag) end)
+    |> Enum.find(default, fn (module) -> Fastfwd.Module.has_tag?(module, tag) end)
   end
 
   @doc """
