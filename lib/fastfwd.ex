@@ -4,6 +4,13 @@ defmodule Fastfwd do
 
   """
 
+  def fwd(modules, tag, function_name, params) do
+    modules
+    |> Fastfwd.select(tag)
+    |> apply(function_name, params)
+  end
+
+
   @doc """
   Returns a list of all modules within a module namespace
 
