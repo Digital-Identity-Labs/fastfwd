@@ -23,3 +23,6 @@ https://en.wikipedia.org/wiki/Dynamic_dispatch#Smalltalk_implementation
 
 https://en.wikipedia.org/wiki/Forwarding_(object-oriented_programming)#Applications
 
+http://charlesleifer.com/blog/django-patterns-pluggable-backends/
+
+ ## Thanks to https://edmz.org/personal/2016/02/25/dynamic_function_dispatch_with_elixir.html
