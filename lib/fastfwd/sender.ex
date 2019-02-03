@@ -8,16 +8,16 @@ defmodule Fastfwd.Sender do
 
     namespace = Keyword.get(opts, :namespace, __CALLER__.module)
     behaviour = Keyword.get(opts, :behaviour, nil)
-    cache = Keyword.get(opts, :cache, true)
-    fallback = Keyword.get(opts, :fallback, nil)
-
+    cache =     Keyword.get(opts, :cache, true)
+    fallback =  Keyword.get(opts, :fallback, nil)
+    autoload =  Keyword.get(opts, :autoload, true)
+    load_apps = Keyword.get(opts, :load_apps, :all)
 
     quote do
 
       @behaviour Fastfwd.Behaviours.Sender
-      @on_load :load_receivers
       @fwd_modcache :"fastfwd/modcache/#{unquote(namespace)}/#{unquote(behaviour)}"
-
+      @fwd_apploadcache :"fastfwd/apploadcache"
 
       @doc """
       Forward a call to a receiver module selected by tag
@@ -75,6 +75,7 @@ defmodule Fastfwd.Sender do
         if unquote(cache) do
           cached_mods = FastGlobal.get(@fwd_modcache)
           if is_nil(cached_mods) do
+            if unquote(autoload), do: {:ok, _} = fwd_cached_app_autoloader()
             cached_mods = Fastfwd.modules(unquote(namespace), unquote(behaviour))
             FastGlobal.put(@fwd_modcache, cached_mods)
           end
@@ -101,10 +102,14 @@ defmodule Fastfwd.Sender do
         |> Fastfwd.map()
       end
 
-      def load_receivers do
-        case Fastfwd.Loader.run(:all) do
-          {:ok, _} -> :ok
-          _ -> raise "Error preloading modules for #{__MODULE__}"
+      ## Scan and load all modules in advance, and cache this to save a little time.
+      ## The first run is still rather slow
+      defp fwd_cached_app_autoloader() do
+        case FastGlobal.get(@fwd_apploadcache) do
+          nil -> cached_appload = Fastfwd.Loader.run(unquote(load_apps))
+                 FastGlobal.put(@fwd_apploadcache, cached_appload)
+                 cached_appload
+          stored -> stored
         end
       end
 
