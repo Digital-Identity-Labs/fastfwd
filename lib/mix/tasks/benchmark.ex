@@ -4,29 +4,53 @@ defmodule Mix.Tasks.Benchmark do
   @shortdoc "Comparitive speed tests"
   def run(_) do
 
-    range = 1..10
-    integer1 = :rand.uniform(100)
-    integer2 = :rand.uniform(100)
-
-    FastGlobal.put(:data, "hello")
-    hello = "hello"
+    require Bread.Stottie
+    require Bread.Barm
+    require Bread.SlicedWhiteLoaf
+    require Bread.Sourdough
 
     Benchee.run(
       %{
-        "Run loader"    => fn -> Fastfwd.Loader.run() end,
-        "Run loader and write"    => fn -> FastGlobal.put(:data, Fastfwd.Loader.run())  end,
-        "Write hello to global" => fn -> FastGlobal.put(:data, "hello") end,
-        "Read hello from global" => fn -> FastGlobal.get(:data) end,
-        "Read hello from variable" => fn -> x = hello end,
+        "FastFwd (no cache)" => fn -> using_fastfwd(false) end,
+        "FastFwd (cached)" => fn -> using_fastfwd(true) end,
+        "Case statement and then calling modules directly" => fn -> using_case() end,
+
       },
-      time: 1,
-      warmup: 1,
-      memory_time: 1,
+      time: 5,
+      warmup: 2,
+      memory_time: 2,
+      pre_check: true,
       formatters: [{Benchee.Formatters.Console, extended_statistics: true}]
     )
 
   end
 
+  def bread_type() do
+    :stottie
+  end
 
+  def loaves_quantity() do
+    8
+  end
+
+  def using_fastfwd(cache \\ true) do
+    if cache do
+      Bread.bake(bread_type(), loaves_quantity())
+    else
+      CachedBread.bake(bread_type(), loaves_quantity())
+    end
+  end
+
+  def using_case do
+    case bread_type() do
+      :barm -> Bread.Barm.bake(loaves_quantity())
+      :stottie -> Bread.Stottie.bake(loaves_quantity())
+      :sliced -> Bread.SlicedWhiteLoaf.bake(loaves_quantity())
+      :sourdough -> Bread.Sourdough.bake(loaves_quantity())
+    end
+  end
 
 end
+
+
+
