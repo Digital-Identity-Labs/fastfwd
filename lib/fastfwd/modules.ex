@@ -54,6 +54,7 @@ defmodule Fastfwd.Modules do
   """
   @spec in_namespace([module], module) :: [module]
   def in_namespace(modules, namespace) do
+    namespace = normalize_namespace(namespace)
     modules
     |> Enum.filter(&String.starts_with?(Atom.to_string(&1), "#{namespace}."))
   end
@@ -89,6 +90,7 @@ defmodule Fastfwd.Modules do
 
   """
   @spec with_behaviour([module], module) :: [module]
+  def with_behaviour(modules, nil), do: modules
   def with_behaviour(modules, behaviour) do
     modules
     |> Enum.filter(&Fastfwd.Module.has_behaviour?(&1, behaviour))
@@ -157,6 +159,7 @@ defmodule Fastfwd.Modules do
   List all tags found in a collection of modules
 
   Returns a list of atoms
+  Returns a list of atoms
 
   ## Examples
 
@@ -194,6 +197,16 @@ defmodule Fastfwd.Modules do
         tag <- Fastfwd.Module.tags(module),
         into: Map.new(),
         do: {tag, module}
+  end
+
+  defp normalize_namespace(namespace) when is_atom(namespace), do: normalize_namespace(Atom.to_string(namespace))
+
+  defp normalize_namespace(namespace) do
+    if String.starts_with?(namespace, "Elixir.") do
+      namespace
+    else
+      "Elixir.#{namespace}"
+    end
   end
 
 end
