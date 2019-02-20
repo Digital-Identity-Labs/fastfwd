@@ -9,16 +9,29 @@ defmodule Mix.Tasks.Benchmark do
     require Bread.SlicedWhiteLoaf
     require Bread.Sourdough
 
+    FastGlobal.put(
+      :test,
+      %{
+        barm: Bread.Barm,
+        stottie: Bread.Stottie,
+        sliced: Bread.SlicedWhiteLoaf,
+        sourdough: Bread.Sourdough
+      }
+    )
+
+    Fastfwd.preload
+
     Benchee.run(
       %{
-        "FastFwd (no cache)" => fn -> using_fastfwd(false) end,
-        "FastFwd (cached)" => fn -> using_fastfwd(true) end,
+        "FastFwd, auto (no cache)" => fn -> using_fastfwd(false) end,
+        "FastFwd, auto (cached)" => fn -> using_fastfwd(true) end,
+        "Basic, manual FastGlobal" => fn -> using_fastglobal() end,
         "Case statement and then calling modules directly" => fn -> using_case() end,
 
       },
-      time: 5,
-      warmup: 2,
-      memory_time: 2,
+      time: 1,
+      warmup: 1,
+      memory_time: 1,
       pre_check: true,
       formatters: [{Benchee.Formatters.Console, extended_statistics: true}]
     )
@@ -26,18 +39,18 @@ defmodule Mix.Tasks.Benchmark do
   end
 
   def bread_type() do
-    :stottie
+    Enum.random([:stottie, :barm, :sliced, :sourdough])
   end
 
   def loaves_quantity() do
-    8
+    Enum.random(1..10)
   end
 
   def using_fastfwd(cache \\ true) do
     if cache do
-      Bread.bake(bread_type(), loaves_quantity())
-    else
       CachedBread.bake(bread_type(), loaves_quantity())
+    else
+      Bread.bake(bread_type(), loaves_quantity())
     end
   end
 
@@ -48,6 +61,10 @@ defmodule Mix.Tasks.Benchmark do
       :sliced -> Bread.SlicedWhiteLoaf.bake(loaves_quantity())
       :sourdough -> Bread.Sourdough.bake(loaves_quantity())
     end
+  end
+
+  def using_fastglobal do
+    apply(FastGlobal.get(:test)[bread_type()], :bake, [loaves_quantity()])
   end
 
 end
