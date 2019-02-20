@@ -1,4 +1,7 @@
 defmodule Fastfwd.Modules do
+
+  alias Fastfwd.Namespace
+
   @moduledoc """
   Interact with Fastfwd-compatible modules - find, filter, build maps.
   """
@@ -54,7 +57,7 @@ defmodule Fastfwd.Modules do
   """
   @spec in_namespace([module], module) :: [module]
   def in_namespace(modules, namespace) do
-    namespace = normalize_namespace(namespace)
+    namespace = Namespace.normalize(namespace)
     modules
     |> Enum.filter(&String.starts_with?(Atom.to_string(&1), "#{namespace}."))
   end
@@ -197,16 +200,6 @@ defmodule Fastfwd.Modules do
         tag <- Fastfwd.Module.tags(module),
         into: Map.new(),
         do: {tag, module}
-  end
-
-  defp normalize_namespace(namespace) when is_atom(namespace), do: normalize_namespace(Atom.to_string(namespace))
-
-  defp normalize_namespace(namespace) do
-    if String.starts_with?(namespace, "Elixir.") do
-      namespace
-    else
-      "Elixir.#{namespace}"
-    end
   end
 
 end
