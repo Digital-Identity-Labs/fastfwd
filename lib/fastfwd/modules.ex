@@ -179,14 +179,14 @@ defmodule Fastfwd.Modules do
   end
 
   @doc """
-  Build a map of tags to modules, without duplicated tags.
+  Build a map of tags to modules, *without duplicated tags*.
 
   Returns a map of atoms to module names.
 
   ## Examples
 
       iex> modules_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.DoubleChocolate]
-      iex> Fastfwd.Modules.map(modules_list)
+      iex> Fastfwd.Modules.routes(modules_list)
       %{
         pistachio: Icecream.Pistachio,
         chocolate: Icecream.DoubleChocolate,
@@ -194,8 +194,8 @@ defmodule Fastfwd.Modules do
       }
 
   """
-  @spec map([module]) :: map
-  def map(modules) do
+  @spec routes([module]) :: map
+  def routes(modules) do
     for module <- modules,
         tag <- Fastfwd.Module.tags(module),
         into: Map.new(),

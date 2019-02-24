@@ -111,10 +111,10 @@ defmodule ModulesTest do
 
   end
 
-  describe "map/1" do
+  describe "routes/1" do
     test "returns a map of tags (as atoms) mapped to modules" do
       modules_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.DoubleChocolate]
-      assert Fastfwd.Modules.map(modules_list) ==
+      assert Fastfwd.Modules.routes(modules_list) ==
                %{
                  pistachio: Icecream.Pistachio,
                  chocolate: Icecream.DoubleChocolate,
