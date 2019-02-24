@@ -88,7 +88,7 @@ defmodule Fastfwd.Modules do
   ## Examples
 
       iex> module_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
-      iex> Fastfwd.Modules.with_behaviour(Fastfwd.Behaviours.Receiver)
+      iex> Fastfwd.Modules.with_behaviour(module_list, Fastfwd.Behaviours.Receiver)
       [Icecream.Pistachio, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
 
   """
