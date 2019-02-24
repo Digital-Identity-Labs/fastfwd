@@ -48,7 +48,6 @@ defmodule Bread.Stottie do
   use Fastfwd.Receiver, tags: [:stottie]
   def bake(loaves), do: "Baking #{loaves} of #{__MODULE__}"
 
-
 end
 
 defmodule Bread.SlicedWhiteLoaf do
@@ -65,7 +64,7 @@ defmodule Bread.Sourdough do
 
 end
 
-defmodule CachedBread do
+defmodule Bread do
 
   use Fastfwd.Sender, namespace: Bread, cache: true
 
@@ -75,22 +74,11 @@ defmodule CachedBread do
 
 end
 
-defmodule Bread do
-
-  use Fastfwd.Sender, namespace: Bread, cache: false
-
-  def bake(type, loaves) do
-    fwd(type, :bake, [loaves])
-  end
-
-end
-
-
 ```
 
 
 ```
-Bread.bake(type, 8)
+Bread.bake(:stottie, 8)
 ```
 
 ## API Documentation
