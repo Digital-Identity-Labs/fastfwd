@@ -59,7 +59,7 @@ defmodule Fastfwd.Module do
 
   """
   @spec has_behaviour?(module, module) :: boolean
-  def has_behaviour?(module, nil) do
+  def has_behaviour?(_module, nil) do
     false
   end
 
