@@ -9,7 +9,7 @@ defmodule Fastfwd.Sender do
     namespace = Keyword.get(opts, :namespace, __CALLER__.module)
     behaviour = Keyword.get(opts, :behaviour, nil)
     cache = Keyword.get(opts, :cache, true)
-    fallback = Keyword.get(opts, :fallback, nil)
+    default = Keyword.get(opts, :default, nil)
     autoload = Keyword.get(opts, :autoload, true)
     load_apps = Keyword.get(opts, :load_apps, :all)
 
@@ -18,7 +18,8 @@ defmodule Fastfwd.Sender do
       @behaviour Fastfwd.Behaviours.Sender
       @fwd_modcache :"fastfwd/modcache/#{unquote(namespace)}/#{unquote(behaviour)}"
       @fwd_mapcache :"fastfwd/mapcache/#{unquote(namespace)}/#{unquote(behaviour)}"
-      @fwd_apploadcache :"fastfwd/apploadcache"
+      @fwd_apploadcache :"fastfwd/apploadcache" # TODO: Make per-module
+      @fwd_default_module unquote(default)
 
       @doc """
       Forward a call to a receiver module selected by tag
@@ -34,7 +35,8 @@ defmodule Fastfwd.Sender do
       @impl Fastfwd.Behaviours.Sender
       @spec fwd(atom, atom, list) :: Anything
       def fwd(tag, function_name, params) do
-        fwd_routes()[tag]
+        fwd_routes()
+        |> Map.get(tag, @fwd_default_module)
         |> apply(function_name, params)
       end
 
