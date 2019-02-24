@@ -6,7 +6,8 @@ defmodule Fastfwd.Sender do
 
   defmacro __using__(opts \\ []) do
 
-    namespace = Keyword.get(opts, :namespace, __CALLER__.module)
+    this_module =  __CALLER__.module
+    namespace = Keyword.get(opts, :namespace, this_module)
     behaviour = Keyword.get(opts, :behaviour, nil)
     cache = Keyword.get(opts, :cache, true)
     default = Keyword.get(opts, :default, nil)
@@ -18,7 +19,7 @@ defmodule Fastfwd.Sender do
       @behaviour Fastfwd.Behaviours.Sender
       @fwd_modcache :"fastfwd/modcache/#{unquote(namespace)}/#{unquote(behaviour)}"
       @fwd_mapcache :"fastfwd/mapcache/#{unquote(namespace)}/#{unquote(behaviour)}"
-      @fwd_apploadcache :"fastfwd/apploadcache" # TODO: Make per-module
+      @fwd_apploadcache :"fastfwd/apploadcache/#{unquote(this_module)}"
       @fwd_default_module unquote(default)
 
       @doc """
