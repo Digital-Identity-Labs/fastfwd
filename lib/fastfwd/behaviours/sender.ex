@@ -13,6 +13,6 @@ defmodule Fastfwd.Behaviours.Sender do
   @callback fwd(Atom.t, Atom.t, [Anything]) :: [Atom.t]
   @callback fwd_tags() :: [Atom.t]
   @callback fwd_modules() :: [Module.t]
-  @callback fwd_map() :: Map.t
+  @callback fwd_routes() :: Map.t
 
 end
