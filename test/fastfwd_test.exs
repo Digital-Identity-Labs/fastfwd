@@ -51,10 +51,10 @@ defmodule FastfwdTest do
     end
   end
 
-  describe "map/1" do
+  describe "routes/1" do
     test "returns a map of active tags to modules" do
       assert Fastfwd.modules(Icecream)
-             |> Fastfwd.map() == %{
+             |> Fastfwd.routes() == %{
                chocolate: Icecream.DoubleChocolate,
                double_chocolate: Icecream.DoubleChocolate,
                pistachio: Icecream.Pistachio,

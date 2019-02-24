@@ -103,14 +103,14 @@ defmodule Fastfwd do
 
   ## Examples
 
-      iex> Fastfwd.modules(Icecream) |> Fastfwd.map()
+      iex> Fastfwd.modules(Icecream) |> Fastfwd.routes()
       %{chocolate: Icecream.DoubleChocolate, double_chocolate: Icecream.DoubleChocolate, pistachio: Icecream.Pistachio, strawberry: Icecream.Strawberry}
 
   """
-  @spec map([module]) :: map
-  def map(modules) do
+  @spec routes([module]) :: map
+  def routes(modules) do
     modules
-    |> Fastfwd.Modules.map()
+    |> Fastfwd.Modules.routes()
   end
 
   @doc """

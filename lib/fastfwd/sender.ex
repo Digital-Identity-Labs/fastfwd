@@ -34,7 +34,7 @@ defmodule Fastfwd.Sender do
       @impl Fastfwd.Behaviours.Sender
       @spec fwd(atom, atom, list) :: Anything
       def fwd(tag, function_name, params) do
-        fwd_map()[tag]
+        fwd_routes()[tag]
         |> apply(function_name, params)
       end
 
@@ -101,13 +101,13 @@ defmodule Fastfwd.Sender do
 
       """
       @impl Fastfwd.Behaviours.Sender
-      @spec fwd_map() :: Map.t()
-      def fwd_map() do
+      @spec fwd_routes() :: Map.t()
+      def fwd_routes() do
         if unquote(cache) do
           cached_map = FastGlobal.get(@fwd_mapcache)
           if is_nil(cached_map) do
             map = fwd_modules()
-                  |> Fastfwd.map()
+                  |> Fastfwd.routes()
             :ok = FastGlobal.put(@fwd_mapcache, map)
             map
           else
@@ -115,7 +115,7 @@ defmodule Fastfwd.Sender do
           end
         else
           fwd_modules()
-          |> Fastfwd.map()
+          |> Fastfwd.routes()
         end
       end
 
