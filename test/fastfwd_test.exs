@@ -37,10 +37,10 @@ defmodule FastfwdTest do
     end
   end
 
-  describe "select/2" do
+  describe "find/2" do
     test "returns the first of the modules to support the tag" do
       assert Fastfwd.modules(Icecream)
-             |> Fastfwd.select(:chocolate) == Icecream.Chocolate
+             |> Fastfwd.find(:chocolate) == Icecream.Chocolate
     end
   end
 

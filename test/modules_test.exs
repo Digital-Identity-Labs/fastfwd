@@ -95,10 +95,10 @@ defmodule ModulesTest do
 
   end
 
-  describe "select/2" do
+  describe "find/2" do
     test "returns the most appropriate module for the tag (tags are not unique per module)" do
       modules_list = Fastfwd.modules(Icecream, Fastfwd.Behaviours.Receiver)
-      assert Fastfwd.Modules.select(modules_list, :chocolate) == Icecream.Chocolate
+      assert Fastfwd.Modules.find(modules_list, :chocolate) == Icecream.Chocolate
     end
 
   end

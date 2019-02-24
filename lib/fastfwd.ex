@@ -64,20 +64,20 @@ defmodule Fastfwd do
   end
 
   @doc """
-  Selects the appropriate module for the supplied tag
+  Finds the first appropriate module from a list of modules for the supplied tag
 
-  Returns the tag as an atom
+  Returns the module
 
   ## Examples
 
       iex> modules = Fastfwd.modules(Icecream)
-      iex> Fastfwd.select(modules, :chocolate)
+      iex> Fastfwd.find(modules, :chocolate)
       Icecream.Chocolate
 
   """
-  @spec select([module], atom) :: [module]
-  def select(modules, tag) do
-    Fastfwd.Modules.select(modules, tag)
+  @spec find([module], atom) :: [module]
+  def find(modules, tag) do
+    Fastfwd.Modules.find(modules, tag)
   end
 
   @doc """

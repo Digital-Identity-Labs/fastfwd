@@ -140,20 +140,20 @@ defmodule Fastfwd.Modules do
   end
 
   @doc """
-  Select a module that has the specified tag.
+  Find the first module that has the specified tag.
 
   Returns a single module name.
 
   ## Examples
 
       iex> modules_list = Fastfwd.modules(Icecream, Fastfwd.Behaviours.Receiver)
-      iex> Fastfwd.Modules.select(modules_list, :chocolate)
+      iex> Fastfwd.Modules.find(modules_list, :chocolate)
       Icecream.Chocolate
 
 
   """
-  @spec select([module], atom, nil | module) :: module
-  def select(modules, tag, default \\ nil) do
+  @spec find([module], atom, nil | module) :: module
+  def find(modules, tag, default \\ nil) do
     modules
     |> Enum.find(default, fn (module) -> Fastfwd.Module.has_tag?(module, tag) end)
   end

@@ -29,7 +29,7 @@ defmodule Mix.Tasks.Benchmark do
         "Case statement and then calling modules directly" => fn -> using_case() end,
 
       },
-      time: 1,
+      time: 2,
       warmup: 1,
       memory_time: 1,
       pre_check: true,
