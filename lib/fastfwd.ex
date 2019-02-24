@@ -6,7 +6,7 @@ defmodule Fastfwd do
 
   def fwd(modules, tag, function_name, params) do
     modules
-    |> Fastfwd.select(tag)
+    |> Fastfwd.find(tag)
     |> apply(function_name, params)
   end
 
