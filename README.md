@@ -189,6 +189,7 @@ Fastfwd is MIT licensed.
 ## Thanks
 
 The "fast" in Fastfwd is from [Discord's FastGlobal library](https://github.com/discordapp/fastglobal)
+
 The "fwd" in Fastfwd is based on the technique [in this blog post](https://edmz.org/personal/2016/02/25/dynamic_function_dispatch_with_elixir.html)
 
 
