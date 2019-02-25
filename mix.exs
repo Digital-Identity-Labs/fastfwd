@@ -6,6 +6,11 @@ defmodule Fastfwd.MixProject do
       app: :fastfwd,
       version: "0.1.0",
       elixir: "~> 1.7",
+      description: "Plugin style function forwarding in Elixir, for adapters, factories and other fun",
+      package: package(),
+      name: "Fastfwd",
+      source_url: "https://github.com/Digital-Identity-Labs/fastfwd",
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       test_coverage: [
         tool: ExCoveralls
@@ -22,9 +27,7 @@ defmodule Fastfwd.MixProject do
 
   # Run "mix help compile.app" to learn about applications.
   def application do
-    [
-      extra_applications: [:logger]
-    ]
+    []
   end
 
   # Run "mix help deps" to learn about dependencies.
@@ -42,4 +45,18 @@ defmodule Fastfwd.MixProject do
       {:ex_matchers, "~> 0.1.3", only: :test}
     ]
   end
+
+  defp package() do
+    [
+      files: ~w(lib priv .formatter.exs mix.exs README* readme* LICENSE*
+                license* CHANGELOG* changelog* src),
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/Digital-Identity-Labs/fastfwd"
+      }
+    ]
+  end
+
+
+
 end
