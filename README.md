@@ -1,6 +1,6 @@
 # Fastfwd
 
-Plugin-like function forwarding in Elixir, for adapters, factories and other fun.
+Plugin style function forwarding in Elixir, for adapters, factories and other fun.
 Fastfwd can be used to provide functionality similar to Rails' ActiveRecord type column,
 or to allow third party libraries or applications to extend the functionality of your code.
 
@@ -19,21 +19,21 @@ end
 
 ## Example
 
-Rather than hardcode which module to use for each type of data with a case statement like this
+Fastfwd proves an alternative to hardcoding which module should be used for each type of data, for example with a case statement, like this
 
 ```elixir
-
     case bread_type do
       :barm -> Bread.Barm.bake(loaves_quantity)
       :stottie -> Bread.Stottie.bake(loaves_quantity)
       :sliced -> Bread.SlicedWhiteLoaf.bake(loaves_quantity)
       :sourdough -> Bread.Sourdough.bake(loaves_quantity)
     end
-
 ```
 
 Fastfwd will find all suitable modules and direct calls to the module
 that matches the "tag".
+
+Fastfwd-compatible modules are given tags:
 
 ```elixir
 defmodule Bread.Barm do
@@ -64,6 +64,12 @@ defmodule Bread.Sourdough do
 
 end
 
+```
+
+Another module is configured to act as a forwarder - this is the module
+the rest of your code will interact with.
+
+```elixir
 defmodule Bread do
 
   use Fastfwd.Sender, namespace: Bread, cache: true
@@ -76,10 +82,27 @@ end
 
 ```
 
+You can then call the appropriate module's function via the forwarder
 
 ```
 Bread.bake(:stottie, 8)
+Bread.bake(order.type, order.quantity)
 ```
+
+You can easily integrate Fastfwd with with Ecto.
+
+To only store records with a type that matches available tags:
+
+```
+def changeset(bread_order, params \\ %{}) do
+    user
+    |> validate_inclusion(:type, Bread.fwd_tags)
+    |> cast(params, [:type, :quantity])
+    |> validate_required([:type, :quantity])
+end
+```
+
+
 
 ## API Documentation
 
