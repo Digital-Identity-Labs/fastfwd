@@ -21,6 +21,11 @@ defmodule Fastfwd.MixProject do
         "coveralls.post": :test,
         "coveralls.html": :test
       ],
+      docs: [
+        main: "README",
+        #logo: "path/to/logo.png",
+        extras: ["README.md"]
+      ],
       deps: deps()
     ]
   end

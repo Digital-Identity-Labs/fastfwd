@@ -1,6 +1,6 @@
 # Fastfwd
 
-Plugin style function forwarding in Elixir, for adapters, factories and other fun.
+Plugin-style function forwarding in Elixir, for adapters, factories and other fun.
 Fastfwd can be used to provide functionality similar to Rails' ActiveRecord type column,
 or to allow third party libraries or applications to extend the functionality of your code.
 
@@ -14,8 +14,8 @@ or to allow third party libraries or applications to extend the functionality of
 
 ## Installation
 
-The package can be installed
-by adding `fastfwd` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `fastfwd` to your list of
+dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -25,57 +25,105 @@ def deps do
 end
 ```
 
-## Example
+## Purpose
 
-Fastfwd proves an alternative to hardcoding which module should be used for each type of data, for example with a case statement, like this
+Elixir lacks OOP inheritance and polymorphism but different types
+of data can be processed by selecting a different modules for each type.
+
+Fastfwd proves an alternative to hardcoding which module should be used
+for each type of data. You might be using a case statement, like this:
 
 ```elixir
-    case bread_type do
-      :barm -> Bread.Barm.bake(loaves_quantity)
-      :stottie -> Bread.Stottie.bake(loaves_quantity)
-      :sliced -> Bread.SlicedWhiteLoaf.bake(loaves_quantity)
-      :sourdough -> Bread.Sourdough.bake(loaves_quantity)
+    case bread.type do
+      :barm -> Bread.Barm.bake(bread.quantity)
+      :stottie -> Bread.Stottie.bake(bread.quantity)
+      :sliced -> Bread.SlicedWhiteLoaf.bake(bread.quantity)
+      :sourdough -> Bread.Sourdough.bake(bread.quantity)
     end
 ```
 
-Fastfwd will find all suitable modules and direct calls to the module
-that matches the "tag".
+This has some disadvantages: whenever you add a new module to handle a new
+ data type you need to update all the case statements, and you need to
+  know all the modules in advance - it isn't possible to automatically extend
+   your application with libraries containing extra data processing modules.
 
-Fastfwd-compatible modules are given tags:
+Fastfwd provides an alternative approach: it will search your application
+ and libraries to find suitable "receiver" modules, build a table of suitable modules,
+ and forward calls from a frontend "sender" module to the appropriate receiver.
+
+ Instead of using a case statement call the method on the sender module like this:
+
+```
+Bread.bake(bread.type, bread.quantity)
+```
+
+If caching is enabled then Fastfwd can be quite fast - not as fast as using
+a static case statement, but close. In my benchmarking it takes 7µs vs 6µs
+for an equivalent case statement.
+
+## Usage
+
+### 1) Using the Sender and Receiver modules
+
+The easiest way to use Fastfwd is to `use` the included `Fastfwd.Sender` and `Fastfwd.Receiver` modules to extend your own modules. If you
+want more control then the Fastfwd module provides some utility functions that you can use to extend or replace
+the bundled `Fastfwd.Sender` and `Fastfwd.Receiver`.
+
+Read `Fastfwd.Sender` and `Fastfwd.Receiver` for more information.
+
+### 2) Writing your own Sender and Receiver modules
+
+WIP
+
+### 3) Using the utility functions
+
+WIP
+
+## Examples
+
+### Using the Sender and Receiver modules
+
+In this example we create modules to bake various type of bread. We will
+create a Bread module that receives order structs and passes the request
+to the correct sub-module.
+
+The modules doing the hard work `use` the `Fastfwd.Receiver` module.
 
 ```elixir
 defmodule Bread.Barm do
 
   use Fastfwd.Receiver, tags: [:barm]
-  def bake(loaves), do: "Baking #{loaves} of #{__MODULE__}"
+  def bake(loaves), do: "Baking #{loaves} Lancashire barm cakes"
 
 end
 
 defmodule Bread.Stottie do
 
   use Fastfwd.Receiver, tags: [:stottie]
-  def bake(loaves), do: "Baking #{loaves} of #{__MODULE__}"
+  def bake(loaves), do: "Baking #{loaves} Newcastle stotties"
 
 end
 
 defmodule Bread.SlicedWhiteLoaf do
 
   use Fastfwd.Receiver, tags: [:sliced]
-  def bake(loaves), do: "Baking #{loaves} of #{__MODULE__}"
+  def bake(loaves), do: "Baking #{loaves} sliced white loaves"
 
 end
 
 defmodule Bread.Sourdough do
 
-  use Fastfwd.Receiver, tags: [:sourdough]
-  def bake(loaves), do: "Baking #{loaves} of #{__MODULE__}"
+  use Fastfwd.Receiver, tags: [:sourdough, :paindecampagne]
+  def bake(loaves), do: "Baking #{loaves} pain de campagne"
 
 end
 
 ```
 
 Another module is configured to act as a forwarder - this is the module
-the rest of your code will interact with.
+the rest of your code will interact with. It `use`s the `Fastfwd.Sender`
+ module, and is configured to search for suitable modules under the
+ 'Bread' module namespace.
 
 ```elixir
 defmodule Bread do
@@ -90,16 +138,21 @@ end
 
 ```
 
-You can then call the appropriate module's function via the forwarder
+We can then call the appropriate bake function via the forwarder, and
+the correct sender module's bake function will be called.
 
 ```
 Bread.bake(:stottie, 8)
-Bread.bake(order.type, order.quantity)
 ```
 
-You can easily integrate Fastfwd with with Ecto.
+### Integrating With Ecto
 
-To only store records with a type that matches available tags:
+One of the biggest reasons Fastfwd was created was to mimic the way
+Ruby on Rails' ActiveRecord will return polymorphic sub-classes using a
+`type` field in the database.
+
+To only store records with a type that matches available tags, verify that
+the record's tag is actually supported by a module:
 
 ```
 def changeset(bread_order, params \\ %{}) do
@@ -111,20 +164,33 @@ end
 ```
 
 
-
 ## API Documentation
 
-Full documentation can be found at [https://hexdocs.pm/fastfwd](https://hexdocs.pm/fastfwd).
+Full API documentation can be found at
+ [https://hexdocs.pm/fastfwd](https://hexdocs.pm/fastfwd).
+
+## Contributing
+
+You can request new features by creating an [issue](https://github.com/Digital-Identity-Labs/fastfwd/issues),
+or submit a [pull request](https://github.com/Digital-Identity-Labs/fastfwd/pulls) with your contribution.
+
+## Copyright and License
+
+Copyright (c) 2019 Digital Identity Ltd, UK
+
+Fastfwd is MIT licensed.
+
+## References
+
+ * https://en.wikipedia.org/wiki/Dynamic_dispatch#Smalltalk_implementation
+ * https://en.wikipedia.org/wiki/Forwarding_(object-oriented_programming)#Applications
+ * http://charlesleifer.com/blog/django-patterns-pluggable-backends/
+
+## Thanks
+
+The "fast" in Fastfwd is from [Discord's FastGlobal library](https://github.com/discordapp/fastglobal)
+
+The "fwd" in Fastfwd is based on the technique [in this blog post](https://edmz.org/personal/2016/02/25/dynamic_function_dispatch_with_elixir.html)
 
 
-## More Information
 
-https://en.wikipedia.org/wiki/Dynamic_dispatch#Smalltalk_implementation
-
-https://en.wikipedia.org/wiki/Forwarding_(object-oriented_programming)#Applications
-
-http://charlesleifer.com/blog/django-patterns-pluggable-backends/
-
-## Thanks to
-
-https://edmz.org/personal/2016/02/25/dynamic_function_dispatch_with_elixir.html

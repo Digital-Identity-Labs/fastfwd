@@ -1,6 +1,15 @@
 defmodule Fastfwd do
   @moduledoc """
-  Toolkit for quickly building simple module proxies, adapters, plugins, facades, etc.
+  Toolkit for quickly building simple module proxies, adapters, plugins, facades, and so on.
+
+  Fastfwd can be used to provide functionality similar to Rails' ActiveRecord type column,
+  or to allow third party libraries or applications to extend the functionality of your code.
+
+
+
+
+
+
 
   """
 

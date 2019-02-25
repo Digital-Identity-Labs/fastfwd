@@ -1,7 +1,10 @@
 defmodule Fastfwd.Sender do
 
   @moduledoc """
-    A typical Fastfwd sender, such as an adapter frontend, forwarder or facade
+    A typical Fastfwd sender, such as an adapter frontend, forwarder or facade.
+
+
+
   """
 
   defmacro __using__(opts \\ []) do
