@@ -4,9 +4,11 @@ Plugin style function forwarding in Elixir, for adapters, factories and other fu
 Fastfwd can be used to provide functionality similar to Rails' ActiveRecord type column,
 or to allow third party libraries or applications to extend the functionality of your code.
 
+*The documentation is still rather patchy and this is the first release. Fastfwd has not been used in production yet.*
+
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+The package can be installed
 by adding `fastfwd` to your list of dependencies in `mix.exs`:
 
 ```elixir
