@@ -179,6 +179,7 @@ or submit a [pull request](https://github.com/Digital-Identity-Labs/fastfwd/pull
 Copyright (c) 2019 Digital Identity Ltd, UK
 
 Fastfwd is MIT licensed.
+<<<<<<< HEAD
 
 ## References
 
@@ -190,6 +191,18 @@ Fastfwd is MIT licensed.
 
 The "fast" in Fastfwd is from [Discord's FastGlobal library](https://github.com/discordapp/fastglobal)
 
+=======
+
+## References
+
+ * https://en.wikipedia.org/wiki/Dynamic_dispatch#Smalltalk_implementation
+ * https://en.wikipedia.org/wiki/Forwarding_(object-oriented_programming)#Applications
+ * http://charlesleifer.com/blog/django-patterns-pluggable-backends/
+
+## Thanks
+
+The "fast" in Fastfwd is from [Discord's FastGlobal library](https://github.com/discordapp/fastglobal)
+>>>>>>> 0ef7e67168c365f74e1e1476040dfade22ae39a4
 The "fwd" in Fastfwd is based on the technique [in this blog post](https://edmz.org/personal/2016/02/25/dynamic_function_dispatch_with_elixir.html)
 
 
