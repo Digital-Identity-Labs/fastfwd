@@ -64,14 +64,14 @@ defmodule Fastfwd.Sender do
       end
 
       @doc """
-      List all tags provided by this module
+      List all receiver modules used by this module
 
-      Returns a list of tags as atoms
+      Returns a list of module names as atoms/modules
 
       ## Examples
 
-          Icecream.DoubleChocolate.fwd_tags()
-          [:chocolate, :double_chocolate]
+          Icecream.fwd_modules()
+         [Icecream.Pistachio, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
 
       """
       @impl Fastfwd.Behaviours.Sender
@@ -96,14 +96,15 @@ defmodule Fastfwd.Sender do
       end
 
       @doc """
-      List all tags provided by this module
+      Returns a map of tags and modules
 
-      Returns a list of tags as atoms
+      If more than one module has a particular tag then module sort order will determine which one gets included as the active
+      mapping of tag to module.
 
       ## Examples
 
-          Icecream.DoubleChocolate.fwd_map()
-          [:chocolate, :double_chocolate]
+          iex> Icecream.fwd_routes()
+          %{chocolate: Icecream.DoubleChocolate, double_chocolate: Icecream.DoubleChocolate, pistachio: Icecream.Pistachio, strawberry: Icecream.Strawberry}
 
       """
       @impl Fastfwd.Behaviours.Sender
