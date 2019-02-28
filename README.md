@@ -18,7 +18,7 @@ dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:fastfwd, "~> 0.1.0"}
+    {:fastfwd, "~> 0.1.1"}
   ]
 end
 ```

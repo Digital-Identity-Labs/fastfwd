@@ -22,7 +22,7 @@ defmodule Fastfwd.MixProject do
         "coveralls.html": :test
       ],
       docs: [
-        main: "README",
+        main: "readme",
         #logo: "path/to/logo.png",
         extras: ["README.md"]
       ],
