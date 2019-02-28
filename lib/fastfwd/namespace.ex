@@ -14,7 +14,7 @@ defmodule Fastfwd.Namespace do
       "Elixir.Icecream.Chocolate"
 
   """
-  @spec normalize(module | String.t()) :: [String.t()]
+  @spec normalize(module() | String.t()) :: String.t()
   def normalize(namespace) when is_atom(namespace), do: normalize(Atom.to_string(namespace))
 
   def normalize(namespace) do

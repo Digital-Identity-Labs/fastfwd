@@ -132,7 +132,7 @@ defmodule Fastfwd.Modules do
 
 
   """
-  @spec with_tag([module], atom) :: module
+  @spec with_tag([module(), ...], atom()) :: [module(), ...]
   def with_tag(modules, tag) do
     modules
     |> with_tags()
@@ -152,7 +152,7 @@ defmodule Fastfwd.Modules do
 
 
   """
-  @spec find([module], atom, nil | module) :: module
+  @spec find([module(), ...], atom, module() | nil) :: module()
   def find(modules, tag, default \\ nil) do
     modules
     |> Enum.find(default, fn (module) -> Fastfwd.Module.has_tag?(module, tag) end)

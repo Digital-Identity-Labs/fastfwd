@@ -5,11 +5,44 @@ defmodule Fastfwd do
   Fastfwd can be used to provide functionality similar to Rails' ActiveRecord type column,
   or to allow third party libraries or applications to extend the functionality of your code.
 
+  Please read the Readme.md file for an introduction.
 
+  ## Usage
 
+  ### 1) Using the Sender and Receiver modules
 
+  The easiest way to use Fastfwd is to `use` the included `Fastfwd.Sender` and `Fastfwd.Receiver` modules to extend your own modules. If you
+  want more control then the Fastfwd module provides some utility functions that you can use to extend or replace
+  the bundled `Fastfwd.Sender` and `Fastfwd.Receiver`.
 
+  Read the `Fastfwd.Sender` and `Fastfwd.Receiver` docs for more information.
 
+  ### 2) Writing your own Sender and Receiver modules
+
+  When you `use` the `Fastfwd.Sender` it will by default search for modules
+  that implement the `Fastfwd.Behaviours.Receiver` behaviour, like `Fastfwd.Sender`. If
+  you need different behaviour you can write your own implementations of
+  `Fastfwd.Behaviours.Receiver` or `Fastfwd.Behaviours.Sender` behaviour or
+  specify different behaviours.
+
+  Read the `Fastfwd.Behaviours.Sender` and `Fastfwd.Behaviours.Receiver` docs for more information.
+
+  ### 3) Using the utility functions
+
+  Fastfwd works by building a list of suitable modules, then collecting the tags of those modules,
+  then providing an alternative to `Kernel.apply` that uses a tag to select a module. The supplied
+  `Fastfwd.Sender` makes this process faster by caching the module list and tag lookup table using
+  [Discord's FastGlobal library](https://github.com/discordapp/fastglobal).
+
+  The top level `Fastfwd` module contains some useful functions for listing modules and
+  extracting tags, while `Fastfwd.Modules` and `Fastfwd.Module` have some lower-level
+  utilities for filtering lists of modules.
+
+  These utilities can be used to validating or process tags before using them
+  to call functions, such as when read and writing to a database or accepting
+  user input.
+
+  This top-level module, `Fastfwd`, contains the most useful utilties for (2) and (3).
 
   """
 
@@ -84,7 +117,7 @@ defmodule Fastfwd do
       Icecream.Chocolate
 
   """
-  @spec find([module], atom) :: [module]
+  @spec find([module(), ...], atom()) :: module()
   def find(modules, tag) do
     Fastfwd.Modules.find(modules, tag)
   end
