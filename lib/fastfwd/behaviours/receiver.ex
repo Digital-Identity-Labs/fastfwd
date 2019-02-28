@@ -24,6 +24,6 @@ defmodule Fastfwd.Behaviours.Receiver do
       [:chocolate, :double_chocolate]
 
   """
-  @callback fwd_tags() :: [Atom.t]
+  @callback fwd_tags() :: [atom()]
 
 end

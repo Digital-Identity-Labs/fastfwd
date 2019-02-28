@@ -168,7 +168,7 @@ defmodule Fastfwd.Sender do
 
       """
       @impl Fastfwd.Behaviours.Sender
-      @spec fwd(atom, atom, list) :: Anything
+      @spec fwd(atom(), atom(), list()) :: Anything
       def fwd(tag, function_name, params) do
         fwd_routes()
         |> Map.get(tag, @fwd_default_module)
@@ -187,7 +187,7 @@ defmodule Fastfwd.Sender do
 
       """
       @impl Fastfwd.Behaviours.Sender
-      @spec fwd_tags() :: [module]
+      @spec fwd_tags() :: [atom(), ...]
       @impl Fastfwd.Behaviours.Sender
       def fwd_tags do
         fwd_modules()
@@ -206,7 +206,7 @@ defmodule Fastfwd.Sender do
 
       """
       @impl Fastfwd.Behaviours.Sender
-      @spec fwd_modules() :: [module]
+      @spec fwd_modules() :: [module(), ...]
       @impl Fastfwd.Behaviours.Sender
       def fwd_modules() do
         if unquote(cache) do
@@ -239,7 +239,7 @@ defmodule Fastfwd.Sender do
 
       """
       @impl Fastfwd.Behaviours.Sender
-      @spec fwd_routes() :: Map.t()
+      @spec fwd_routes() :: map()
       def fwd_routes() do
         if unquote(cache) do
           cached_map = FastGlobal.get(@fwd_mapcache)

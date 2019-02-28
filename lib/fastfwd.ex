@@ -117,7 +117,7 @@ defmodule Fastfwd do
       Icecream.Chocolate
 
   """
-  @spec find([module], atom) :: [module]
+  @spec find([module(), ...], atom()) :: module()
   def find(modules, tag) do
     Fastfwd.Modules.find(modules, tag)
   end

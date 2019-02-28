@@ -21,7 +21,7 @@ defmodule Fastfwd.Behaviours.Sender do
       "Eating 8 of Icecream.DoubleChocolate"
 
   """
-  @callback fwd(Atom.t, Atom.t, [Anything]) :: [Atom.t]
+  @callback fwd(atom(), atom(), [Anything]) :: [atom()]
 
 
   @doc """
@@ -35,7 +35,7 @@ defmodule Fastfwd.Behaviours.Sender do
       [:pistachio, :chocolate, :strawberry, :chocolate, :double_chocolate]
 
   """
-  @callback fwd_tags() :: [Atom.t]
+  @callback fwd_tags() :: [atom()]
 
   @doc """
   List all receiver modules used by this module
@@ -48,7 +48,7 @@ defmodule Fastfwd.Behaviours.Sender do
      [Icecream.Pistachio, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
 
   """
-  @callback fwd_modules() :: [Module.t]
+  @callback fwd_modules() :: [module()]
 
   @doc """
   Returns a map of tags and modules
@@ -62,6 +62,6 @@ defmodule Fastfwd.Behaviours.Sender do
       %{chocolate: Icecream.DoubleChocolate, double_chocolate: Icecream.DoubleChocolate, pistachio: Icecream.Pistachio, strawberry: Icecream.Strawberry}
 
   """
-  @callback fwd_routes() :: Map.t
+  @callback fwd_routes() :: map()
 
 end

@@ -65,7 +65,7 @@ defmodule Fastfwd.Receiver do
 
       """
       @impl Fastfwd.Behaviours.Receiver
-      @spec fwd_tags() :: [module]
+      @spec fwd_tags() :: [module()]
       def fwd_tags() do
         unquote(tags)
       end
