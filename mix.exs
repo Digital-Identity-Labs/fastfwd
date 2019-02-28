@@ -4,7 +4,7 @@ defmodule Fastfwd.MixProject do
   def project do
     [
       app: :fastfwd,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.7",
       description: "Plugin style function forwarding in Elixir, for adapters, factories and other fun",
       package: package(),
