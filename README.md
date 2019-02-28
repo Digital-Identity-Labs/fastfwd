@@ -199,6 +199,7 @@ Fastfwd is MIT licensed.
 
 ## References
 
+ * https://elixir-lang.org/getting-started/typespecs-and-behaviours.html#dynamic-dispatch
  * https://en.wikipedia.org/wiki/Dynamic_dispatch#Smalltalk_implementation
  * https://en.wikipedia.org/wiki/Forwarding_(object-oriented_programming)#Applications
  * http://charlesleifer.com/blog/django-patterns-pluggable-backends/
