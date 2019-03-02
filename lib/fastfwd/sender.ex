@@ -175,6 +175,31 @@ defmodule Fastfwd.Sender do
         |> apply(function_name, params)
       end
 
+      defmacro deffwd(fun, opts) do
+        funs = Macro.escape(fun, unquote: true)
+        quote bind_quoted: [fun: fun, opts: opts] do
+          tag_function = Keyword.get(opts, :tag) ||
+            raise ArgumentError, "expected tag: function to be given as argument"
+
+            {name, args, as, as_args} = Kernel.Utils.defdelegate(fun, opts)
+
+#            unless Module.get_attribute(__MODULE__, :doc) do
+#              @doc "See `#{inspect target}.#{as}/#{:erlang.length args}`."
+#            end
+
+            def unquote(name)(unquote_splicing(args)) do
+
+              tag = unquote(tag_function)
+
+              target = fwd_routes()
+                       |> Map.get(tag, @fwd_default_module)
+                       |> apply(name, args)
+              unquote(target).unquote(as)(unquote_splicing(as_args))
+            end
+
+        end
+      end
+
       @doc """
       List all tags provided by this module. This function is provided by `Fastfwd.Sender`.
 

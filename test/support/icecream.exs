@@ -44,8 +44,7 @@ defmodule Icecream do
 
   use Fastfwd.Sender
 
-  def eat(type, spoons) do
-    fwd(type, :eat, spoons)
-  end
+  deffwd eat(tag, spoons), tag: func() -> tag end
+
 
 end
