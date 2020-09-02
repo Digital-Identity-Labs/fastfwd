@@ -40,13 +40,13 @@ defmodule Fastfwd.MixProject do
     [
       {:fastglobal, "~> 1.0"},
       {:apex, "~> 1.2", only: [:dev, :test], runtime: false},
-      {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.10.3", only: :test},
-      {:benchee, "~> 0.14.0", only: [:dev, :test]},
-      {:ex_doc, "~> 0.19.2", only: :dev, runtime: false},
-      {:earmark, "~> 1.3", only: :dev, runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
-      {:ex_unit_assert_match, "~> 0.3.0", only: :test},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.13", only: :test},
+      {:benchee, "~> 1.0", only: [:dev, :test]},
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false},
+      {:earmark, "~> 1.4", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:ex_unit_assert_match, "~> 0.3", only: :test},
       {:ex_matchers, "~> 0.1.3", only: :test}
     ]
   end
