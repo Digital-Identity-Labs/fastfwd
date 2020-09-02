@@ -23,8 +23,9 @@ defmodule Fastfwd.Module do
         []
       end
     rescue
-      ## This is probably a bad idea
-      _whatever -> []
+      _whatever ->
+        IO.puts :stderr, "Fastfwd: failed to extract tags from module #{module}"
+        []
     end
   end
 
