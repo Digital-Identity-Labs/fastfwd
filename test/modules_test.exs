@@ -31,13 +31,13 @@ defmodule ModulesTest do
   describe "in_namespace/1" do
 
     test "returns all modules within a namespace" do
-      assert Fastfwd.Modules.in_namespace(Icecream) == [
-               Icecream.Pistachio,
-               Icecream.Spoon,
+      assert Enum.sort(Fastfwd.Modules.in_namespace(Icecream)) == [
                Icecream.Chocolate,
+               Icecream.DoubleChocolate,
+               Icecream.Pistachio,
                Icecream.ShavedIce,
-               Icecream.Strawberry,
-               Icecream.DoubleChocolate
+               Icecream.Spoon,
+               Icecream.Strawberry
              ]
     end
 
@@ -54,12 +54,12 @@ defmodule ModulesTest do
 
   describe "with_behaviour/1" do
     test "returns all modules with the specified behaviour" do
-      assert Fastfwd.Modules.with_behaviour(Fastfwd.Behaviours.Receiver) == [
-               Icecream.Pistachio,
+      assert Enum.sort(Fastfwd.Modules.with_behaviour(Fastfwd.Behaviours.Receiver)) == [
                Icecream.Chocolate,
+               Icecream.DoubleChocolate,
+               Icecream.Pistachio,
                Icecream.ShavedIce,
-               Icecream.Strawberry,
-               Icecream.DoubleChocolate
+               Icecream.Strawberry
              ]
     end
   end
@@ -67,9 +67,9 @@ defmodule ModulesTest do
   describe "with_behaviour/2" do
     test "filters a module list to only include modules with the specified behaviour" do
       modules = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate]
-      assert Fastfwd.Modules.with_behaviour(modules, Fastfwd.Behaviours.Receiver) == [
-               Icecream.Pistachio,
-               Icecream.Chocolate
+      assert Enum.sort(Fastfwd.Modules.with_behaviour(modules, Fastfwd.Behaviours.Receiver)) == [
+               Icecream.Chocolate,
+               Icecream.Pistachio
              ]
     end
   end
@@ -90,7 +90,10 @@ defmodule ModulesTest do
         Icecream.Strawberry,
         Icecream.DoubleChocolate
       ]
-      assert Fastfwd.Modules.with_tag(module_list, :chocolate) == [Icecream.Chocolate, Icecream.DoubleChocolate]
+      assert Enum.sort(Fastfwd.Modules.with_tag(module_list, :chocolate)) == [
+               Icecream.Chocolate,
+               Icecream.DoubleChocolate
+             ]
     end
 
   end
@@ -106,7 +109,7 @@ defmodule ModulesTest do
   describe "tags/1" do
     test "returns all tags provided by a list of modules" do
       modules_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate]
-      assert Fastfwd.Modules.tags(modules_list) == [:pistachio, :chocolate]
+      assert Enum.sort(Fastfwd.Modules.tags(modules_list)) == [:chocolate, :pistachio]
     end
 
   end
@@ -114,12 +117,12 @@ defmodule ModulesTest do
   describe "routes/1" do
     test "returns a map of tags (as atoms) mapped to modules" do
       modules_list = [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.DoubleChocolate]
-      assert Fastfwd.Modules.routes(modules_list) ==
-               %{
-                 pistachio: Icecream.Pistachio,
-                 chocolate: Icecream.DoubleChocolate,
-                 double_chocolate: Icecream.DoubleChocolate,
-               }
+      assert Map.equal? Fastfwd.Modules.routes(modules_list),
+                        %{
+                          pistachio: Icecream.Pistachio,
+                          chocolate: Icecream.DoubleChocolate,
+                          double_chocolate: Icecream.DoubleChocolate,
+                        }
     end
   end
 

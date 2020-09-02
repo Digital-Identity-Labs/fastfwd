@@ -5,24 +5,16 @@ defmodule Icecream.Chocolate do
 
 end
 
-defmodule Icecream.Strawberry do
+defmodule Icecream.DoubleChocolate do
 
-  use Fastfwd.Receiver, tags: [:strawberry]
+  use Fastfwd.Receiver, tags: [:chocolate, :double_chocolate]
   def eat(spoons), do: "Eating #{spoons} of #{__MODULE__}"
-
 
 end
 
 defmodule Icecream.Pistachio do
 
   use Fastfwd.Receiver, tags: [:pistachio]
-  def eat(spoons), do: "Eating #{spoons} of #{__MODULE__}"
-
-end
-
-defmodule Icecream.DoubleChocolate do
-
-  use Fastfwd.Receiver, tags: [:chocolate, :double_chocolate]
   def eat(spoons), do: "Eating #{spoons} of #{__MODULE__}"
 
 end
@@ -39,6 +31,14 @@ defmodule Icecream.Spoon do
   def material, do: "metal"
 
 end
+
+defmodule Icecream.Strawberry do
+
+  use Fastfwd.Receiver, tags: [:strawberry]
+  def eat(spoons), do: "Eating #{spoons} of #{__MODULE__}"
+
+end
+
 
 defmodule Icecream do
 

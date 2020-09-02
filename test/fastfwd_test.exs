@@ -9,24 +9,19 @@ defmodule FastfwdTest do
   describe "modules/2" do
 
     test "returns all modules under the specified namespace that match the specified protocol" do
-      assert Fastfwd.modules(Icecream, Fastfwd.Behaviours.Receiver) == [
-               Icecream.Pistachio,
+      assert Fastfwd.modules(Icecream, Fastfwd.Behaviours.Receiver)
+             |> Enum.sort() == [
                Icecream.Chocolate,
+               Icecream.DoubleChocolate,
+               Icecream.Pistachio,
                Icecream.ShavedIce,
-               Icecream.Strawberry,
-               Icecream.DoubleChocolate
+               Icecream.Strawberry
              ]
     end
 
     test "returns all modules under the specified namespace if no protocol is specified" do
-      assert Fastfwd.modules(Icecream) == [
-               Icecream.Pistachio,
-               Icecream.Spoon,
-               Icecream.Chocolate,
-               Icecream.ShavedIce,
-               Icecream.Strawberry,
-               Icecream.DoubleChocolate
-             ]
+      assert Fastfwd.modules(Icecream)
+             |> Enum.sort() ==  [Icecream.Chocolate, Icecream.DoubleChocolate, Icecream.Pistachio, Icecream.ShavedIce, Icecream.Spoon, Icecream.Strawberry]
     end
 
     test "Returns an empty list if nothing matches" do
@@ -53,20 +48,21 @@ defmodule FastfwdTest do
     test "returns all tags from the modules" do
       assert Icecream
              |> Fastfwd.modules()
-             |> Fastfwd.tags() == [:pistachio, :chocolate, :strawberry, :chocolate, :double_chocolate]
+             |> Fastfwd.tags()
+             |> Enum.sort() == [:chocolate, :chocolate, :double_chocolate, :pistachio, :strawberry]
     end
   end
 
   describe "routes/1" do
     test "returns a map of active tags to modules" do
-      assert Icecream
-             |> Fastfwd.modules()
-             |> Fastfwd.routes() == %{
-               chocolate: Icecream.DoubleChocolate,
-               double_chocolate: Icecream.DoubleChocolate,
-               pistachio: Icecream.Pistachio,
-               strawberry: Icecream.Strawberry
-             }
+      assert Map.equal? Icecream
+                        |> Fastfwd.modules()
+                        |> Fastfwd.routes(), %{
+                          chocolate: Icecream.DoubleChocolate,
+                          double_chocolate: Icecream.DoubleChocolate,
+                          pistachio: Icecream.Pistachio,
+                          strawberry: Icecream.Strawberry
+                        }
     end
   end
 

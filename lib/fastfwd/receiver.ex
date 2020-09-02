@@ -60,7 +60,7 @@ defmodule Fastfwd.Receiver do
 
       ## Examples
 
-          Icecream.DoubleChocolate.fwd_tags()
+          Icecream.DoubleChocolate.fwd_tags() |> Enum.sort()
           [:chocolate, :double_chocolate]
 
       """
