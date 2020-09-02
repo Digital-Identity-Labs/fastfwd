@@ -10,7 +10,7 @@ defmodule Fastfwd.Tag do
     if valid?(tags, tag) do
       {:ok, to_atom(tag)}
     else
-      {:error, "Tag #{tag} is not present in list of tags #{IO.inspect(tags)}"}
+      {:error, "Tag #{tag} is not present in list of tags #{Tags.to_string(tags)}"}
     end
   end
 
@@ -38,9 +38,11 @@ defmodule Fastfwd.Tag do
     try do
       String.to_existing_atom(tag)
     rescue
-      RuntimeError -> raise ArgumentError, message: "Cannot convert '#{tag}' into tag atom - it has not already been defined"
+      _exception ->
+        reraise ArgumentError,
+                [message: "Cannot convert '#{tag}' into tag atom - it has not already been defined"],
+                __STACKTRACE__
     end
   end
 
 end
-
