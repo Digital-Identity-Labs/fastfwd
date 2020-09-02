@@ -10,7 +10,7 @@ defmodule Fastfwd.Tag do
     if valid?(tags, tag) do
       {:ok, to_atom(tag)}
     else
-      {:error, "Tag #{tag} is not present in list of tags #{}"}
+      {:error, "Tag #{tag} is not present in list of tags #{IO.inspect(tags)}"}
     end
   end
 
