@@ -14,5 +14,10 @@ defmodule Fastfwd.Tags do
     Enum.map(tags, fn x -> Tag.to_string(x) end)
   end
 
+  def to_string(tags) do
+    tags
+    |> to_strings()
+    |> Enum.join(", ")
+  end
 
 end
