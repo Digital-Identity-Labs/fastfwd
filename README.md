@@ -18,7 +18,7 @@ dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:fastfwd, "~> 0.1.0"}
+    {:fastfwd, "~> 0.2.0"}
   ]
 end
 ```
@@ -172,7 +172,7 @@ the record's tag is actually supported by a module:
 ```
 def changeset(bread_order, params \\ %{}) do
     user
-    |> validate_inclusion(:type, Bread.fwd_tags)
+    |> validate_inclusion(:type, Fastfwd.Tags.to_strings(Bread))
     |> cast(params, [:type, :quantity])
     |> validate_required([:type, :quantity])
 end

@@ -23,7 +23,9 @@ defmodule Fastfwd.Module do
         []
       end
     rescue
-      []
+      _whatever ->
+        IO.puts :stderr, "Fastfwd: failed to extract tags from module #{module}"
+        []
     end
   end
 
@@ -43,7 +45,8 @@ defmodule Fastfwd.Module do
   """
   @spec has_tag?(module, atom) :: boolean
   def has_tag?(module, tag) do
-    tags(module)
+    module
+    |> tags()
     |> Enum.member?(tag)
   end
 

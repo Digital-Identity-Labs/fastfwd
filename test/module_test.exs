@@ -5,7 +5,7 @@ defmodule ModuleTest do
   describe "tags/1" do
 
     test "returns all tags for a module" do
-      assert Fastfwd.Module.tags(Icecream.DoubleChocolate) == [:chocolate, :double_chocolate]
+      assert Enum.sort(Fastfwd.Module.tags(Icecream.DoubleChocolate)) == [:chocolate, :double_chocolate]
     end
 
     test "Returns an empty list for any module that lacks tags" do

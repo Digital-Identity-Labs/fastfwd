@@ -60,8 +60,8 @@ defmodule Fastfwd do
 
   ## Examples
 
-      iex> Fastfwd.modules(Icecream)
-      [Icecream.Pistachio, Icecream.Spoon, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
+      iex> Fastfwd.modules(Icecream) |> Enum.sort()
+      [Icecream.Chocolate, Icecream.DoubleChocolate, Icecream.Pistachio, Icecream.ShavedIce, Icecream.Spoon, Icecream.Strawberry]
 
   In this example Icecream.Spoon is not a receiver, and has no receiver tags.
 
@@ -77,8 +77,8 @@ defmodule Fastfwd do
 
   ## Examples
 
-      iex> Fastfwd.modules(Icecream, Fastfwd.Behaviours.Receiver)
-      [Icecream.Pistachio, Icecream.Chocolate, Icecream.ShavedIce, Icecream.Strawberry, Icecream.DoubleChocolate]
+      iex> Fastfwd.modules(Icecream, Fastfwd.Behaviours.Receiver)  |> Enum.sort()
+      [Icecream.Chocolate, Icecream.DoubleChocolate, Icecream.Pistachio, Icecream.ShavedIce, Icecream.Strawberry]
 
    Icecream.Spoon lacks receiver behaviour so it has been excluded.
 
@@ -130,8 +130,8 @@ defmodule Fastfwd do
   ## Examples
 
       iex> modules = Fastfwd.modules(Icecream)
-      iex> Fastfwd.tags(modules)
-      [:pistachio, :chocolate, :strawberry, :chocolate, :double_chocolate]
+      iex> Fastfwd.tags(modules) |> Enum.sort()
+      [:chocolate, :chocolate, :double_chocolate, :pistachio, :strawberry]
 
   """
   @spec tags([module]) :: [atom]

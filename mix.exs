@@ -4,7 +4,7 @@ defmodule Fastfwd.MixProject do
   def project do
     [
       app: :fastfwd,
-      version: "0.1.1",
+      version: "0.2.0",
       elixir: "~> 1.7",
       description: "Plugin style function forwarding in Elixir, for adapters, factories and other fun",
       package: package(),
@@ -22,7 +22,7 @@ defmodule Fastfwd.MixProject do
         "coveralls.html": :test
       ],
       docs: [
-        main: "README",
+        main: "readme",
         #logo: "path/to/logo.png",
         extras: ["README.md"]
       ],

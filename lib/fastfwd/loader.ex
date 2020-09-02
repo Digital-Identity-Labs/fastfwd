@@ -72,7 +72,8 @@ defmodule Fastfwd.Loader do
   """
   @spec run([atom]) :: {:ok, [atom]} | {:error, String.t()}
   def run(apps) do
-    List.flatten([apps])
+    [apps]
+    |> List.flatten()
     |> Enum.reject(fn x -> x == :undefined end)
     |> Enum.each(
          fn app ->
@@ -90,13 +91,17 @@ defmodule Fastfwd.Loader do
 
   ## I realise this is almost certainly not the best way to do this. TODO: Find the best way to do this
   defp probably_this_application() do
+
+    # :application.get_application(__MODULE__) ?
+
     all_applications()
     |> List.first()
   end
 
   ## Collect the names of all loaded applications as atoms
   defp all_applications() do
-    Application.started_applications(1000)
+    1000
+    |> Application.started_applications()
     |> Enum.map(fn ({app, _, _}) -> app end)
   end
 
