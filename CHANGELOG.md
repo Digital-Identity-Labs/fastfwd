@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 An embarrassing bug fix and code improvements. Should now compile on Elixir 1.10+
 
 ### Added
-- `Tags.to_string` will concatenate list of tag atoms to a string
+- Early, undocumented Tag and Tags modules for tag processing and validation
 
 ### Fixed
 - Fastfwd could not compile on recent Elixir versions because of bad syntax in a 'try' block. 
