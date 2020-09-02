@@ -1,6 +1,10 @@
 defmodule FastfwdTest do
   use ExUnit.Case
-  doctest Fastfwd, except: [preload: 1, preload: 0]
+  doctest Fastfwd,
+          except: [
+            preload: 1,
+            preload: 0
+          ]
 
   describe "modules/2" do
 
@@ -39,21 +43,24 @@ defmodule FastfwdTest do
 
   describe "find/2" do
     test "returns the first of the modules to support the tag" do
-      assert Fastfwd.modules(Icecream)
+      assert Icecream
+             |> Fastfwd.modules()
              |> Fastfwd.find(:chocolate) == Icecream.Chocolate
     end
   end
 
   describe "tags/1" do
     test "returns all tags from the modules" do
-      assert Fastfwd.modules(Icecream)
+      assert Icecream
+             |> Fastfwd.modules()
              |> Fastfwd.tags() == [:pistachio, :chocolate, :strawberry, :chocolate, :double_chocolate]
     end
   end
 
   describe "routes/1" do
     test "returns a map of active tags to modules" do
-      assert Fastfwd.modules(Icecream)
+      assert Icecream
+             |> Fastfwd.modules()
              |> Fastfwd.routes() == %{
                chocolate: Icecream.DoubleChocolate,
                double_chocolate: Icecream.DoubleChocolate,

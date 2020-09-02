@@ -42,13 +42,14 @@ defmodule LoaderTest do
 
     test "specifying a list of applications should result in those applications being returned" do
       {:ok, applications} = Fastfwd.Loader.run([:ex_unit, :ssl, :elixir])
-     assert applications == [:ex_unit, :ssl, :elixir]
+      assert applications == [:ex_unit, :ssl, :elixir]
     end
 
     test "specifying a single atom of :all should cause all applications to be searched, and returned as list" do
       {:ok, applications} = Fastfwd.Loader.run(:all)
       expect applications, to_not: be_empty()
-      assert applications == Application.started_applications(1000)
+      assert applications == 1000
+                             |> Application.started_applications()
                              |> Enum.map(fn ({app, _, _}) -> app end)
     end
 

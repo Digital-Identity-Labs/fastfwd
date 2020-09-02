@@ -23,7 +23,8 @@ defmodule Fastfwd.Module do
         []
       end
     rescue
-      []
+      ## This is probably a bad idea
+      _whatever -> []
     end
   end
 
@@ -43,7 +44,8 @@ defmodule Fastfwd.Module do
   """
   @spec has_tag?(module, atom) :: boolean
   def has_tag?(module, tag) do
-    tags(module)
+    module
+    |> tags()
     |> Enum.member?(tag)
   end
 
